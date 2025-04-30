@@ -1,107 +1,135 @@
 <?php
 
-namespace RefactoringGuru\Singleton\Conceptual;
+namespace lab2;
 
 /**
- * EN: Singleton Design Pattern
+ * EN: State Design Pattern
  *
- * Intent: Lets you ensure that a class has only one instance, while providing a
- * global access point to this instance.
+ * Intent: Lets an object alter its behavior when its internal state changes. It
+ * appears as if the object changed its class.
  *
- * RU: Паттерн Одиночка
+ * RU: Паттерн Состояние
  *
- * Назначение: Гарантирует, что у класса есть только один экземпляр, и
- * предоставляет к нему глобальную точку доступа.
+ * Назначение: Позволяет объектам менять поведение в зависимости от своего
+ * состояния. Извне создаётся впечатление, что изменился класс объекта.
  */
 
 /**
- * EN: The Singleton class defines the `GetInstance` method that serves as an
- * alternative to constructor and lets clients access the same instance of this
- * class over and over.
+ * EN: The Context defines the interface of interest to clients. It also
+ * maintains a reference to an instance of a State subclass, which represents
+ * the current state of the Context.
  *
- * RU: Класс Одиночка предоставляет метод `GetInstance`, который ведёт себя как
- * альтернативный конструктор и позволяет клиентам получать один и тот же
- * экземпляр класса при каждом вызове.
+ * RU: Контекст определяет интерфейс, представляющий интерес для клиентов. Он
+ * также хранит ссылку на экземпляр подкласса Состояния, который отображает
+ * текущее состояние Контекста.
  */
-echo '<pre>'; 
-class Singleton
+echo '<pre>';
+class Context
 {
     /**
-     * EN: The Singleton's instance is stored in a static field. This field is
-     * an array, because we'll allow our Singleton to have subclasses. Each item
-     * in this array will be an instance of a specific Singleton's subclass.
-     * You'll see how this works in a moment.
+     * EN: @var State A reference to the current state of the Context.
      *
-     * RU: Объект одиночки храниться в статичном поле класса. Это поле — массив,
-     * так как мы позволим нашему Одиночке иметь подклассы. Все элементы этого
-     * массива будут экземплярами кокретных подклассов Одиночки. Не волнуйтесь,
-     * мы вот-вот познакомимся с тем, как это работает.
+     * RU: @var State Ссылка на текущее состояние Контекста.
      */
-    private static $instances = [];
+    private $state;
 
-    /**
-     * EN: The Singleton's constructor should always be private to prevent
-     * direct construction calls with the `new` operator.
-     *
-     * RU: Конструктор Одиночки всегда должен быть скрытым, чтобы предотвратить
-     * создание объекта через оператор new.
-     */
-    protected function __construct() { }
-
-    /**
-     * EN: Singletons should not be cloneable.
-     *
-     * RU: Одиночки не должны быть клонируемыми.
-     */
-    protected function __clone() { }
-
-    /**
-     * EN: Singletons should not be restorable from strings.
-     *
-     * RU: Одиночки не должны быть восстанавливаемыми из строк.
-     */
-    public function __wakeup()
+    public function __construct(State $state)
     {
-        throw new \Exception("Невозможно десериализовать одиночку.");
+        $this->transitionTo($state);
     }
 
     /**
-     * EN: This is the static method that controls the access to the singleton
-     * instance. On the first run, it creates a singleton object and places it
-     * into the static field. On subsequent runs, it returns the client existing
-     * object stored in the static field.
+     * EN: The Context allows changing the State object at runtime.
      *
-     * This implementation lets you subclass the Singleton class while keeping
-     * just one instance of each subclass around.
-     *
-     * RU: Это статический метод, управляющий доступом к экземпляру одиночки.
-     * При первом запуске, он создаёт экземпляр одиночки и помещает его в
-     * статическое поле. При последующих запусках, он возвращает клиенту объект,
-     * хранящийся в статическом поле.
-     *
-     * Эта реализация позволяет вам расширять класс Одиночки, сохраняя повсюду
-     * только один экземпляр каждого подкласса.
+     * RU: Контекст позволяет изменять объект Состояния во время выполнения.
      */
-    public static function getInstance(): Singleton
+    public function transitionTo(State $state): void
     {
-        $cls = static::class;
-        if (!isset(self::$instances[$cls])) {
-            self::$instances[$cls] = new static();
-        }
-
-        return self::$instances[$cls];
+        echo "Контекст: Переход к " . get_class($state) . ".\n";
+        $this->state = $state;
+        $this->state->setContext($this);
     }
 
     /**
-     * EN: Finally, any singleton should define some business logic, which can
-     * be executed on its instance.
+     * EN: The Context delegates part of its behavior to the current State
+     * object.
      *
-     * RU: Наконец, любой одиночка должен содержать некоторую бизнес-логику,
-     * которая может быть выполнена на его экземпляре.
+     * RU: Контекст делегирует часть своего поведения текущему объекту
+     * Состояния.
      */
-    public function someBusinessLogic()
+    public function request1(): void
     {
-        // ...
+        $this->state->handle1();
+    }
+
+    public function request2(): void
+    {
+        $this->state->handle2();
+    }
+}
+
+/**
+ * EN: The base State class declares methods that all Concrete State should
+ * implement and also provides a backreference to the Context object, associated
+ * with the State. This backreference can be used by States to transition the
+ * Context to another State.
+ *
+ * RU: Базовый класс Состояния объявляет методы, которые должны реализовать все
+ * Конкретные Состояния, а также предоставляет обратную ссылку на объект
+ * Контекст, связанный с Состоянием. Эта обратная ссылка может использоваться
+ * Состояниями для передачи Контекста другому Состоянию.
+ */
+abstract class State
+{
+    /**
+     * @var Context
+     */
+    protected $context;
+
+    public function setContext(Context $context)
+    {
+        $this->context = $context;
+    }
+
+    abstract public function handle1(): void;
+
+    abstract public function handle2(): void;
+}
+
+/**
+ * EN: Concrete States implement various behaviors, associated with a state of
+ * the Context.
+ *
+ * RU: Конкретные Состояния реализуют различные модели поведения, связанные с
+ * состоянием Контекста.
+ */
+class ConcreteStateA extends State
+{
+    public function handle1(): void
+    {
+        echo "ConcreteStateA обрабатывает запрос1.\n";
+        echo "ConcreteStateA хочет изменить состояние контекста.\n";
+        $this->context->transitionTo(new ConcreteStateB());
+    }
+
+    public function handle2(): void
+    {
+        echo "ConcreteStateA обрабатывает запрос2.\n";
+    }
+}
+
+class ConcreteStateB extends State
+{
+    public function handle1(): void
+    {
+        echo "ConcreteStateB обрабатывает запрос1.\n";
+    }
+
+    public function handle2(): void
+    {
+        echo "ConcreteStateB обрабатывает запрос2.\n";
+        echo "ConcreteStateB хочет изменить состояние контекста.\n";
+        $this->context->transitionTo(new ConcreteStateA());
     }
 }
 
@@ -110,16 +138,7 @@ class Singleton
  *
  * RU: Клиентский код.
  */
-function clientCode()
-{
-    $s1 = Singleton::getInstance();
-    $s2 = Singleton::getInstance();
-    if ($s1 === $s2) {
-        echo "Одиночка работает, обе переменные содержат один и тот же экземпляр.";
-    } else {
-        echo "Одиночка не сработал, переменные содержат разные экземпляры.";
-    }
-}
-
-clientCode();
+$context = new Context(new ConcreteStateA());
+$context->request1();
+$context->request2();
 echo '</pre>';
