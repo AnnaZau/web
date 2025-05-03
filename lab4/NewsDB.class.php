@@ -44,7 +44,7 @@ class NewsDB implements INewsDB {
         return $this->_db;
     }
 
-    public function saveNews($title, $category, $description, $source)
+    public function saveNews(string $title, string $category, string $description, string $source): bool 
     {
         $dt = time();
         $sql = "INSERT INTO msgs(title, category, description, source, datetime)
@@ -56,7 +56,7 @@ class NewsDB implements INewsDB {
         return $this->_db->exec($sql);
     }
 
-    public function getNews()
+    public function getNews(): array
     {
         $sql = "SELECT msgs.id as id, title, category.name as category, 
                 description, source, datetime
@@ -74,7 +74,7 @@ class NewsDB implements INewsDB {
         return $news;
     }
 
-    public function deleteNews($id)
+    public function deleteNews(int $id): bool
     {
         $sql = "DELETE FROM msgs WHERE id = " . (int)$id;
         return $this->_db->exec($sql);
