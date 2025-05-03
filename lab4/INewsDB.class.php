@@ -14,14 +14,14 @@ interface INewsDB{
 	 *	
 	 *	@return boolean - результат успех/ошибка
 	*/
-	function saveNews($title, $category, $description, $source);
+	function saveNews($title, $category, $description, $source): boolean;
 	
     /**
 	 *	Выборка всех записей из новостной ленты
 	 *	
 	 *	@return array - результат выборки в виде массива
 	*/
-	function getNews();
+	function getNews(): array;
 	
     /**
 	 *	Удаление записи из новостной ленты
@@ -30,6 +30,6 @@ interface INewsDB{
 	 *	
 	 *	@return boolean - результат успех/ошибка
 	*/
-	function deleteNews($id);
+	function deleteNews($id): boolean;
 }
 ?>
