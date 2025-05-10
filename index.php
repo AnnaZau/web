@@ -42,7 +42,11 @@
         <lu><a> Лабораторная работа №4</a></lu>
         <li><a href="http://f1097116.xsph.ru/lab4/news.php">Задание 1</a></li>
         <li><a href=https://img.plantuml.biz/plantuml/svg/LL7BJiD03Bn7oZzOvTA891Tk5Q0IfGSaMWbLdAFDnaGhfRl5Te08-7VoR9gRFPwHP-mjYoAfJnMyCTAnOS6Jx_cUiOBqhZJ2ym6_E4tWn_S0Re7L9tR8MenK689MWgMZ9eJ2i2Pp5kDi2EngqXXiSkSgL7RGbYYzDDY08bBDW1POeU0qk0Z-EXkwKiomTA2TPO4qoGvF-nqymCgsuxZ8Lzquoefy0yVN5oDur_Epda-rbdKm00Kk-akYfTlPxEnrOVMAVDEIqwJ5hXOl4epu506_KO_RuQD6acRiaBKwur78s7A4MhtiY1pjUO9qvHYxkjqmlUV-DuwdG_dUM4JHutmBtzkYBTfN_mC0>Диаграмма классов</a></li>
+        <lu><a> Лабораторная работа №5</a></lu>
+        <li><a href="http://f1097116.xsph.ru/lab5/news.php">Задание 1</a></li>
+        <li><a href=https://img.plantuml.biz/plantuml/svg/hP2z3i8m38JtF8N78g0R2sBeoiB20rHkOgIAr1MEmuyGxqvKXHGnaycVTNUnhWcAed7muB7R66CzXW27E7GauNY9AEJWQI2zDKpQBVIiUK7ilj564UAic7PBQ5ixSb29LglPlohMHTO9tNfsrGUlwFkPcEvQu4oFCkSV4x-CIMaa9xG4-pIWZf8k_rzy2TtLzKz3fY5sgSGt>Диаграмма классов</a></li>
     </ol>
+    
 </nav>
 
 </body>
