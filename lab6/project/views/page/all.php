@@ -4,13 +4,13 @@
 		<tr>
 			<th>id</th>
 			<th>title</th>
-			<th>ссылка</th>
+			<th>text</th>
 		</tr>
 		<?php foreach ($pages as $page): ?>
 		<tr>
 			<td><?= $page['id']; ?></td>
 			<td><?= $page['title']; ?></td>
-			<td><a href="/page/<?= $page['id']; ?>/">ссылка на страницу</td>
+			<td><?= $page['text']; ?></td>
 		</tr>
 		<?php endforeach; ?>
 	</table>
